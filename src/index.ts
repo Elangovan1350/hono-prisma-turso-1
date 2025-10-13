@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "https://hono-prisma-turso-1.vercel.app/",
-      "http://localhost:3000/",
+      "http://localhost:5173/",
     ],
   })
 );
