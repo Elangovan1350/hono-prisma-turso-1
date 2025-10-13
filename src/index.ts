@@ -13,10 +13,10 @@ const prisma = new PrismaClient({ adapter });
 app.use(
   "*",
   cors({
-    origin: [
-      "https://hono-prisma-turso-1.vercel.app/",
-      "http://localhost:5173/",
-    ],
+    origin: "*",
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
