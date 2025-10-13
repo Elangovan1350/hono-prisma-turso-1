@@ -10,11 +10,18 @@ const adapter = new PrismaLibSQL({
 });
 const prisma = new PrismaClient({ adapter });
 
-app.use("*", cors({ origin: "*" }));
+app.use(
+  "*",
+  cors({
+    origin: [
+      "https://hono-prisma-turso-1.vercel.app/",
+      "http://localhost:3000",
+    ],
+  })
+);
 
 app.get("/", async (c) => {
   const user = await prisma.user.findMany();
-  console.log(user);
   return c.json(user);
 });
 app.post("/", async (c) => {
