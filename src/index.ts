@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client";
 import { PrismaLibSQL } from "@prisma/adapter-libsql";
+import { cors } from "hono/cors";
 
 const app = new Hono();
 const adapter = new PrismaLibSQL({
@@ -8,6 +9,8 @@ const adapter = new PrismaLibSQL({
   authToken: `${process.env.TURSO_AUTH_TOKEN}`,
 });
 const prisma = new PrismaClient({ adapter });
+
+app.use("*", cors({ origin: "*" }));
 
 app.get("/", async (c) => {
   const user = await prisma.user.findMany();
