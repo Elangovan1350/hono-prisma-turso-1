@@ -2,6 +2,7 @@
   "name": "hono-prisma-turso-1",
   "type": "module",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
