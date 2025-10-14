@@ -11,15 +11,15 @@ const adapter = new PrismaLibSQL({
 });
 const prisma = new PrismaClient({ adapter });
 
-// app.use(
-//   "*",
-//   cors({
-//     origin: "*",
-//     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//     allowHeaders: ["Content-Type", "Authorization"],
-//     credentials: true,
-//   })
-// );
+app.use(
+  "*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 app.use(
   "/api/*",
   cors({
@@ -27,6 +27,8 @@ app.use(
       "http://localhost:5173",
       "https://hono-prisma-turso-1.vercel.app/",
     ], // Replace with your frontend's URL
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
