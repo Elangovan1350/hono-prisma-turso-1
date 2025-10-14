@@ -23,7 +23,10 @@ const prisma = new PrismaClient({ adapter });
 app.use(
   "/api/*",
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend's URL
+    origin: [
+      "http://localhost:5173",
+      "https://hono-prisma-turso-1.vercel.app/",
+    ], // Replace with your frontend's URL
     credentials: true,
   })
 );
