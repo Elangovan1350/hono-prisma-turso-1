@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../prisma/client";
 import { PrismaLibSQL } from "@prisma/adapter-libsql";
 
 const adapter = new PrismaLibSQL({
@@ -13,5 +13,8 @@ export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET || "",
   baseUrl: process.env.BETTER_AUTH_URL || "",
   database: prismaAdapter(prisma, { provider: "sqlite" }),
-  trustedOrigins: ["http://localhost:5173", "http://localhost:3000"],
+  trustedOrigins: [
+    "http://localhost:5173",
+    "https://react-js-froendend.vercel.app/",
+  ],
 });
