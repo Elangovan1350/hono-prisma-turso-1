@@ -2,14 +2,30 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client";
 import { PrismaLibSQL } from "@prisma/adapter-libsql";
 import { cors } from "hono/cors";
-import { auth } from "./auth";
+// import { auth } from "./auth";
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
 
 const app = new Hono();
 const adapter = new PrismaLibSQL({
   url: `${process.env.TURSO_DATABASE_URL}`,
   authToken: `${process.env.TURSO_AUTH_TOKEN}`,
 });
+// const prisma = new PrismaClient({ adapter });
+
+// const adapter = new PrismaLibSQL({
+//   url: `${process.env.TURSO_DATABASE_URL}`,
+//   authToken: `${process.env.TURSO_AUTH_TOKEN}`,
+// });
 const prisma = new PrismaClient({ adapter });
+const auth = betterAuth({
+  emailAndPassword: { enabled: true },
+  database: prismaAdapter(prisma, { provider: "sqlite" }),
+  trustedOrigins: [
+    "http://localhost:5173",
+    "https://react-js-froendend.vercel.app/",
+  ],
+});
 
 app.use(
   "*",
