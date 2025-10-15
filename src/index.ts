@@ -30,8 +30,8 @@ app.use(
 // );
 
 app.use("/api/auth/*", (c) => auth.handler(c.req.raw));
-
-app.get("/", async (c) => {
+app.get("/", (c) => c.text("Hello Hono!"));
+app.get("/user", async (c) => {
   const user = await prisma.user.findMany();
   return c.json(user);
 });
