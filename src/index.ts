@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client";
 import { PrismaLibSQL } from "@prisma/adapter-libsql";
 import { cors } from "hono/cors";
-import { auth } from "./auth.js";
+import { auth } from "./utils/auth.js";
 
 const app = new Hono();
 const adapter = new PrismaLibSQL({
