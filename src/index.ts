@@ -24,7 +24,16 @@ app.use(
 app.use("/api/auth/*", (c) => auth.handler(c.req.raw));
 app.get("/", (c) => c.text("Hello Hono!"));
 app.get("/user", async (c) => {
-  const user = await prisma.user.findMany();
+  const user = await prisma.user.findMany({
+    where: { emailVerified: false },
+  });
+  return c.json(user);
+});
+app.get("/user/:email", async (c) => {
+  const { email } = c.req.param();
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
   return c.json(user);
 });
 
