@@ -10,8 +10,6 @@ const adapter = new PrismaLibSQL({
 const prisma = new PrismaClient({ adapter });
 export const auth = betterAuth({
   emailAndPassword: { enabled: true },
-  secret: process.env.BETTER_AUTH_SECRET || "",
-  baseUrl: process.env.BETTER_AUTH_URL || "",
   database: prismaAdapter(prisma, { provider: "sqlite" }),
   trustedOrigins: [
     "http://localhost:5173",
