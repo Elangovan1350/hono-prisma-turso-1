@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { auth } from "./utils/auth.js";
 import { prisma } from "./utils/prismaConnect.js";
+import { tryDecode } from "hono/utils/url";
 
 const app = new Hono();
 // const adapter = new PrismaLibSQL({
@@ -31,6 +32,7 @@ app.get("/", (c) => c.text("Hello Hono!"));
 app.get("/user", async (c) => {
   const user = await prisma.user.findMany({
     where: { emailVerified: false },
+    include: { posts: true },
   });
   return c.json(user);
 });
@@ -44,12 +46,65 @@ app.get("/user/:email", async (c) => {
   return c.json(user);
 });
 
-app.post("/user", async (c) => {
-  const { name } = await c.req.json();
-  const newUser = await prisma.user.findMany({
-    where: { name },
+// Create a new post
+app.post("/post", async (c) => {
+  const { title, content, userId } = await c.req.json();
+  const newPost = await prisma.post.create({
+    data: { title, content, userId },
   });
-  return c.json(newUser);
+  return c.json(newPost);
+});
+
+//  get user post
+app.get("/posts/:userId", async (c) => {
+  const { userId } = c.req.param();
+  const userPosts = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      name: true,
+      posts: {
+        select: {
+          title: true,
+          content: true,
+          id: true,
+        },
+      },
+    },
+  });
+  return c.json(userPosts);
+});
+
+app.put("/updatePost/:id", async (c) => {
+  const { id } = c.req.param();
+  const { title, content } = await c.req.json();
+  if (!title && !content) {
+    return c.json({ error: "nothing to update" }, 400);
+  }
+
+  try {
+    const updatePost = await prisma.post.update({
+      where: { id },
+      data: {
+        title,
+        content,
+      },
+    });
+    return c.json(updatePost);
+  } catch (error) {
+    return c.json({ error: "post not found and not update" }, 404);
+  }
+});
+
+app.delete("/deletePost/:id", async (c) => {
+  const { id } = c.req.param();
+  try {
+    const deletepost = await prisma.post.delete({
+      where: { id },
+    });
+    return c.json(deletepost);
+  } catch (error) {
+    return c.json({ error: "something is worng , post is not deleted" }, 404);
+  }
 });
 
 export default app;
