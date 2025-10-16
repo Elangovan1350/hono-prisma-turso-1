@@ -21,20 +21,35 @@ app.use(
   })
 );
 
+// Auth routes
 app.use("/api/auth/*", (c) => auth.handler(c.req.raw));
+
+// Basic route
 app.get("/", (c) => c.text("Hello Hono!"));
+
+// User routes
 app.get("/user", async (c) => {
   const user = await prisma.user.findMany({
     where: { emailVerified: false },
   });
   return c.json(user);
 });
+
+// Get user by email
 app.get("/user/:email", async (c) => {
   const { email } = c.req.param();
   const user = await prisma.user.findUnique({
     where: { email },
   });
   return c.json(user);
+});
+
+app.post("/user", async (c) => {
+  const { name } = await c.req.json();
+  const newUser = await prisma.user.findMany({
+    where: { name },
+  });
+  return c.json(newUser);
 });
 
 export default app;
