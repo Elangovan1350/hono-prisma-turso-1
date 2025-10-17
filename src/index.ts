@@ -8,7 +8,7 @@ const app = new Hono();
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:5173", "https://react-js-froendend.vercel.app"],
+    origin: `${process.env.HOST_URL}`,
     allowHeaders: ["Content-Type"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,

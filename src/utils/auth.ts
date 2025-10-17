@@ -12,12 +12,5 @@ import { prisma } from "./prismaConnect.js";
 export const auth = betterAuth({
   emailAndPassword: { enabled: true },
   database: prismaAdapter(prisma, { provider: "sqlite" }),
-  trustedOrigins: [
-    "http://localhost:5173",
-    "https://react-js-froendend.vercel.app",
-  ],
-  cookies: {
-    secure: true,
-    sameSite: "none", // 👈 required for cross-domain cookies
-  },
+  trustedOrigins: [`${process.env.HOST_URL}`],
 });
