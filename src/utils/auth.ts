@@ -15,4 +15,15 @@ export const auth = betterAuth({
   emailAndPassword: { enabled: true },
   database: prismaAdapter(prisma, { provider: "sqlite" }),
   trustedOrigins: [`${process.env.HOST_URL}`],
+  advanced: {
+    defaultCookieAttributes:
+      process.env.NODE_ENV === "production"
+        ? {
+            sameSite: "none",
+            secure: true,
+            httpOnly: true,
+            partitioned: true,
+          }
+        : undefined,
+  },
 });
