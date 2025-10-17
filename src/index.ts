@@ -16,7 +16,8 @@ app.use(
   "*",
   cors({
     origin: ["http://localhost:5173", "https://react-js-froendend.vercel.app"],
-
+    allowHeaders: ["Content-Type"],
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );

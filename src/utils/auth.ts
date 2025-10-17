@@ -16,4 +16,8 @@ export const auth = betterAuth({
     "http://localhost:5173",
     "https://react-js-froendend.vercel.app",
   ],
+  cookies: {
+    secure: true,
+    sameSite: "none", // 👈 required for cross-domain cookies
+  },
 });
