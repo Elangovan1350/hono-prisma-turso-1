@@ -4,7 +4,6 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { auth } from "./utils/auth.js";
 import { prisma } from "./utils/prismaConnect.js";
-import { tryDecode } from "hono/utils/url";
 
 const app = new Hono();
 // const adapter = new PrismaLibSQL({
