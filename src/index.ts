@@ -60,11 +60,27 @@ app.get("/posts/:userId", async (c) => {
           title: true,
           content: true,
           id: true,
+          published: true,
+          createdAt: true,
         },
       },
     },
   });
   return c.json(userPosts);
+});
+
+app.put("/done/:id", async (c) => {
+  const { id } = c.req.param();
+  const getPost = await prisma.post.findUnique({
+    where: { id },
+  });
+  const doneData = await prisma.post.update({
+    where: { id: id },
+    data: {
+      published: !getPost?.published,
+    },
+  });
+  return c.json(doneData);
 });
 
 app.put("/updatePost/:id", async (c) => {
